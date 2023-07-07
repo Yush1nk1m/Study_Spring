@@ -1,4 +1,4 @@
-package survey;
+package controller;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,16 +9,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import survey.*;
 
 @Controller
 @RequestMapping("/survey")
 public class SurveyController {
 
 	@GetMapping
-	public String form(Model model) {
+	public ModelAndView form(Model model) {	// Model 클래스 객체를 사용하여 spring -> jsp로 데이터 전송
 		List<Question> questions = createQuestions();
-		model.addAttribute("questions", questions);
-		return "survey/surveyForm";
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("questions", questions);
+		mav.setViewName("survey/surveyForm");		// 전달할 뷰의 이름
+		model.addAttribute("questions", questions);		// 뷰에 전달할 모델 데이터, jsp에서 ${questions}로 데이터 접근 가능
+		return mav;
 	}
 	
 	private List<Question> createQuestions() {
